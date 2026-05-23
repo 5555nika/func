@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentals</title>
+</head>
+<body>
+    <script>
+    //-----------------------------------------------
+
+    function getPiramyde(line) {
+        let result = ''
+        for (let i = 1; i <= line; i++) {
+            result += '#'.repeat(i) + '\n'
+        }
+        return result
+    }
+
+    //-------------------------------------------------
+
+    function fizzbuzz(limit) {
+        let result = []
+        for (let i = 1; i <= limit; i++) {
+            if (i % 3 === 0 && i % 5 === 0) {
+                result.push('fizzbuzz')
+            } else if (i % 3 === 0 ) {
+                result.push('fizz')
+            } else if (i % 5 === 0 ) {
+                result.push('buzz')
+            } else {
+                result.push(i)
+            }
+        }
+        return result
+    }
+
+    //-------------------------------------------------
+
+    function finabocci(limit) {
+        let f = []
+        for (let i = 0; i < limit; i++) {
+            if (i === 0) { f[i] = 1}
+            else if (i === 1 ) { f[i] = 1}
+                else { f[i] = f[i - 2] + f[i - 1]}
+        }
+        return f
+    }
+
+    //-------------------------------------------------
+
+    function createOrder(name, count, price) {
+        let totalPrice = count * price
+        return {
+            print () {
+                return `${name} ${count} x ${price} = ${totalPrice}`
+            }
+        }
+    }
+    let book = createOrder('Tom Soyer', 2, 100)
+    console.log(book.print());
+
+    //-------------------------------------------------
+
+    function getEvenAndOdd(count) {
+        count += ''
+        let even = 0; let odd = 0;
+        for (let i = 0; i < count.length; i++) {
+            let digit = +count[i]
+            if (digit % 2 === 0) { even++}
+            else { odd++ }
+        }
+        return [even, odd]
+    }
+    //-------------------------------------------------
+
+    let contacts = [123,'John','Zuck',345,'Ben','Alan',678,'Mom'];
+
+    function getSorted(a, b) {
+        if (typeof a === 'number' && typeof b === 'number' ) {return a - b}
+        else if (typeof a === 'number') {return -1}
+        else if (typeof b === 'number') {return 1}
+        else {return a > b ? 1 : -1}
+    }
+
+    //-------------------------------------------------
+
+    let fruits = ['kiwi', 'apple', 'kiwi', 'mango', 'kiwi', 'apple'];
+
+    function getUnique(fruit) {
+        let unique = []
+            fruit.forEach(item => {
+                unique[item] = true
+        }) 
+        return Object.keys(unique)
+    }
+    
+    //-------------------------------------------------
+
+    let fruit = ['kiwi', 'apple', 'kiwi', 'mango', 'kiwi', 'apple'];
+
+    function fructiesSort(fruit) {
+        let count = {}
+            fruit.forEach(i => {
+                if (!count[i] ) { count[i] = 1}
+                else {count[i]++}
+        }) 
+        return  count
+    }
+
+    //-------------------------------------------------
+
+    let nums = ['4','100','23','1'];
+
+    function getSort (a, b) {
+        let A = a
+        let B = b
+        return A - B
+    }
+
+    //-------------------------------------------------
+
+    const f = [100,101,102,103,104,105];
+
+    function getSort (arr) {
+        return arr
+        .map(i => ([Math.random(), i]))
+        .sort((a, b) => a - b )
+        .map(i => i[1])
+    }
+    
+    //-------------------------------------------------
+
+    const arr = ['Sam',true,789,'Mary','Sam'];
+
+        let newArr = Array.from(arr.entries())
+        .filter(i => i[1] === 'Sam')
+        .map(i => i[0])
+    
+    //-------------------------------------------------
+
+    function debounce (func, delay) {
+        let timeout;
+        return function (...arg) {
+            clearTimeout(timeout)
+            setTimeout(() => { func(arg) }, delay)
+        }       
+    }
+    
+    //-------------------------------------------------
+
+    function throttle (func, delay) {
+        let lastTime = 0;
+        return function (...arg) {
+            let now = new Date().getTime()
+            if (now - lastTime >= delay) {
+                func(arg)
+                now = lastTime
+            }
+        }
+    }
+    
+    //-------------------------------------------------
+
+    function memoize (func) {
+        let cashe = {};
+        return function (...arg) {
+            let key = JSON.stringify(arg)
+            if (!cashe[key]) {
+                cashe[key]  = func(arg)
+            }
+            return cashe[key]
+        }
+    }
+    
+    //-------------------------------------------------
+
+    function reconstructTrip (tickets) {
+        let map = {}
+        for (let i = 0; i < tickets.length; i++) {
+            let ticket = tickets[i]
+            map[ticket.from] = ticket.to
+        }
+
+    let start = Object.keys(map).find(from => 
+        !Object.entries(map).includes(from)
+    )
+        let route = []
+        for (let i = 0; i < tickets.length; i++) {
+            route.push({from: start, to: map[start]})
+            start = map[start]
+        }
+        return route
+    }
+    console.log(reconstructTrip([
+        {from: 'Череповец', to: 'Москва'},
+        {from: 'Москва', to: 'Сочи'},
+        {from: 'Сочи', to: 'Краснодар'},
+        {from: 'Краснодар', to: 'Майкоп'}
+]))
+    //-------------------------------------------------
+
+    function getObj (obj) {   
+        for (let key in obj) {
+            return false
+        }
+        return true
+    }
+    
+    //-------------------------------------------------
+
+    function myFilter(callback) {    
+        return function (arr) {
+            return arr.filter(callback)
+        }
+    }
+    let num = [1, 2, 3, 4, 5]
+    let filt = myFilter(x => x > 3)
+
+     //-------------------------------------------------
+    
+    Array.prototype.myFilter2 = function(callback) {
+        let f = []
+        for (let i = 0; i < this.length; i++) {
+            if (callback(this[i], i, this)) {
+                f.push(this[i])
+            }
+        }
+        return f
+    }
+    const arrt = [1, 2, 3, 4, 5];
+    const filt2 = arrt.myFilter2(x => x > 2 );
+    console.log(filt2)
+
+ //-------------------------------------------------
+    
+    function replaceSubstring(str, search, replace) {
+        let result = ''
+        for (let i = 0; i < str.length; i++) {
+            if (str.substring(i, i + search.length) === search) {
+                result += replace
+                i += search.length - 1
+            } else {
+                result += str[i]
+            }
+        }
+        return result
+    }
+console.log(replaceSubstring('abc abc abc', 'abc', '123'))
+
+ //-------------------------------------------------
+
+    function calcSalaries () {
+        let salaries = {
+            john : 100,
+            Ann : 160,
+            Pete : 130,
+        }
+        let total = 0;
+        for (let key in salaries) {
+            total += salaries[key]
+        }
+        return total
+}
+
+ //-------------------------------------------------
+
+    let menu = {
+        width: 200,
+        height: 300,
+        title: "My menu"
+    }
+
+    function calcParam (obj) {
+        let total = 0;
+        for (let key in obj) {
+            if (typeof (obj[key]) === 'number') {
+                total += obj[key]
+            }
+        }
+        return total
+}
+
+ //-------------------------------------------------
+
+    function Calc () {
+        this.read = function () {
+            this.a = +prompt('a', 0)
+            this.b = +prompt('b', 0)
+        }
+        this.plus = function () {
+            return this.a + this.b
+        }
+}
+
+ //-------------------------------------------------
+
+    function calc (cb, num) {
+        let result = cb(num + 2)
+        return result
+        }
+        let show = function (result) {
+            return result
+        }
+
+//-------------------------------------------------
+
+    let user = {
+        name: 'Alice'
+    }
+    function fn (greet, age) {
+        return `${greet}, my name is ${this.name}, ${age}`
+    }
+    fn.call(user, 'Hi',19)
+    console.log(fn.call(user, 'Hi', 19));
+    console.log(fn.apply(user, ['Hello', 34]));
+    let a = fn.bind(user, 'Huu', 56)
+    console.log(a());
+
+
+//-------------------------------------------------
+
+    let getFetch = new Promise((resolve, reject) => {
+        setTimeout(() => { resolve([1,2,3,4,5])}, 2000)
+    }).then(data => console.log(data))
+
+//-------------------------------------------------
+
+
+    </script> 
+</body>
+</html>
